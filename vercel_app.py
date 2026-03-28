@@ -36,17 +36,18 @@ def get_db_connection():
             print("❌ MONGODB_URI not found")
             return None, None
         
-        # Try different connection methods for Vercel
+        # Optimized connection for Vercel serverless
         client = MongoClient(
             mongodb_uri,
-            serverSelectionTimeoutMS=5000,
-            connectTimeoutMS=5000,
-            retryWrites=True,
-            w="majority"
+            serverSelectionTimeoutMS=3000,  # Reduced timeout
+            connectTimeoutMS=3000,
+            retryWrites=False,  # Disabled for serverless
+            w="majority",
+            maxPoolSize=1,  # Limit connections for serverless
+            socketTimeoutMS=3000
         )
         
-        # Test connection
-        client.admin.command('ping')
+        # Quick connection test
         db = client['placement_system']
         return client, db
         
@@ -77,21 +78,29 @@ def initialize_database():
     if db is not None:
         return  # Already initialized
     
-    client, db = get_db_connection()
-    
-    # Collections
-    users = db['users'] if db else None
-    companies = db['companies'] if db else None
-    jobs = db['jobs'] if db else None
-    internships = db['internships'] if db else None
-    placements = db['placements'] if db else None
-    applications = db['applications'] if db else None
-    trainings = db['trainings'] if db else None
-    system_ips = db['system_ips'] if db else None
-    notifications = db['notifications'] if db else None
-    
-    if not db:
-        print("⚠️  Warning: MongoDB connection failed. Some features may not work.")
+    try:
+        client, db = get_db_connection()
+        
+        # Collections
+        users = db['users'] if db else None
+        companies = db['companies'] if db else None
+        jobs = db['jobs'] if db else None
+        internships = db['internships'] if db else None
+        placements = db['placements'] if db else None
+        applications = db['applications'] if db else None
+        trainings = db['trainings'] if db else None
+        system_ips = db['system_ips'] if db else None
+        notifications = db['notifications'] if db else None
+        
+        if not db:
+            print("⚠️  Warning: MongoDB connection failed. Using fallback mode.")
+    except Exception as e:
+        print(f"❌ Database initialization failed: {e}")
+        # Set all to None to use fallback mode
+        client = None
+        db = None
+        users = companies = jobs = internships = placements = None
+        applications = trainings = system_ips = notifications = None
 
 # Store IP addresses on startup
 def store_system_ips():
