@@ -11,3 +11,4 @@ Werkzeug==2.3.7
 Pillow==10.0.1
 Flask-Limiter==3.5.0
 Flask-Talisman==1.1.0
+vercel-wsgi==0.1.0

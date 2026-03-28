@@ -54,23 +54,44 @@ def get_db_connection():
         print(f"❌ MongoDB connection error: {e}")
         return None, None
 
-# Initialize database connection
-client, db = get_db_connection()
+# Initialize database connection lazily
+client = None
+db = None
 
 # Collections
-users = db['users'] if db else None
-companies = db['companies'] if db else None
-jobs = db['jobs'] if db else None
-internships = db['internships'] if db else None
-placements = db['placements'] if db else None
-applications = db['applications'] if db else None
-trainings = db['trainings'] if db else None
-system_ips = db['system_ips'] if db else None
-notifications = db['notifications'] if db else None
+users = None
+companies = None
+jobs = None
+internships = None
+placements = None
+applications = None
+trainings = None
+system_ips = None
+notifications = None
 
-# Add error handling for missing database
-if not db:
-    print("⚠️  Warning: MongoDB connection failed. Some features may not work.")
+def initialize_database():
+    """Initialize database connection on demand"""
+    global client, db, users, companies, jobs, internships, placements
+    global applications, trainings, system_ips, notifications
+    
+    if db is not None:
+        return  # Already initialized
+    
+    client, db = get_db_connection()
+    
+    # Collections
+    users = db['users'] if db else None
+    companies = db['companies'] if db else None
+    jobs = db['jobs'] if db else None
+    internships = db['internships'] if db else None
+    placements = db['placements'] if db else None
+    applications = db['applications'] if db else None
+    trainings = db['trainings'] if db else None
+    system_ips = db['system_ips'] if db else None
+    notifications = db['notifications'] if db else None
+    
+    if not db:
+        print("⚠️  Warning: MongoDB connection failed. Some features may not work.")
 
 # Store IP addresses on startup
 def store_system_ips():
@@ -131,12 +152,14 @@ def store_system_ips():
 
 # Store IPs on startup (only if not on Vercel)
 if os.getenv('VERCEL') != '1':
+    initialize_database()
     store_system_ips()
 
 # IP Address API Endpoints
 @app.route('/api/store-ip', methods=['POST'])
 def store_ip_address():
     """Store IP addresses in MongoDB"""
+    initialize_database()  # Ensure DB is connected
     try:
         if not system_ips:
             return jsonify({'error': 'MongoDB not available'}), 500
@@ -177,6 +200,7 @@ def store_ip_address():
 @app.route('/api/get-ips', methods=['GET'])
 def get_ip_addresses():
     """Get all stored IP addresses"""
+    initialize_database()  # Ensure DB is connected
     try:
         if not system_ips:
             # Return from JSON file as fallback
@@ -241,10 +265,58 @@ def get_current_ip():
 # Main routes
 @app.route('/')
 def home():
-    return render_template('index.html')
+    """Serve the home page with fallback for serverless environments"""
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        # Fallback for serverless environments where templates might not be available
+        html_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerTrack AI - Server Running</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .status { color: #28a745; font-weight: bold; }
+        .api-list { margin: 20px 0; }
+        .api-item { background: #f8f9fa; padding: 10px; margin: 5px 0; border-radius: 5px; font-family: monospace; }
+        .error { color: #dc3545; background: #f8d7da; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 CareerTrack AI Server</h1>
+        <p class="status">✅ Server is running successfully!</p>
+        
+        <h2>Available API Endpoints:</h2>
+        <div class="api-list">
+            <div class="api-item">GET /health - Health check</div>
+            <div class="api-item">GET /test-db - Database connection test</div>
+            <div class="api-item">GET /api/current-ip - Get current IP information</div>
+            <div class="api-item">GET /api/get-ips - Get stored IP addresses</div>
+            <div class="api-item">POST /api/store-ip - Store IP addresses</div>
+        </div>
+        
+        <h2>Server Information:</h2>
+        <p>Environment: """ + os.getenv('VERCEL_ENV', 'development') + """</p>
+        <p>Timestamp: """ + datetime.now().isoformat() + """</p>
+        
+        <div class="error">
+            ⚠️ Template rendering failed: """ + str(e) + """<br>
+            Server is running but templates may not be properly configured for deployment.
+        </div>
+    </div>
+</body>
+</html>
+        """
+        return html_content
 
 @app.route('/test-db')
 def test_db():
+    initialize_database()  # Ensure DB is connected
     if db:
         try:
             db.admin.command('ping')
@@ -295,6 +367,9 @@ except ImportError:
         return app(environ, start_response)
 
 if __name__ == '__main__':
+    # Initialize database for local development
+    initialize_database()
+    
     # Create uploads directory if it doesn't exist
     if not os.path.exists(app.config['UPLOAD_FOLDER']):
         os.makedirs(app.config['UPLOAD_FOLDER'])
