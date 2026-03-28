@@ -68,6 +68,10 @@ trainings = db['trainings'] if db else None
 system_ips = db['system_ips'] if db else None
 notifications = db['notifications'] if db else None
 
+# Add error handling for missing database
+if not db:
+    print("⚠️  Warning: MongoDB connection failed. Some features may not work.")
+
 # Store IP addresses on startup
 def store_system_ips():
     """Store system IP addresses in MongoDB"""
@@ -282,9 +286,13 @@ def uploaded_file(filename):
 # (Add your existing routes for authentication, internships, etc.)
 
 # Vercel serverless handler
-def handler(request):
-    """Vercel serverless function handler"""
-    return app(request.environ, lambda status, headers: None)
+try:
+    from vercel_wsgi import handler as vercel_handler
+except ImportError:
+    # vercel-wsgi not available in local development
+    def vercel_handler(environ, start_response):
+        """Fallback handler for local development"""
+        return app(environ, start_response)
 
 if __name__ == '__main__':
     # Create uploads directory if it doesn't exist

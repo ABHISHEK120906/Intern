@@ -11,3 +11,4 @@ Werkzeug==2.3.7
 Pillow==10.1.0
 requests==2.31.0
 certifi==2023.11.17
+vercel-wsgi==0.1.0
