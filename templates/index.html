@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart AI Internship & Placement Tracking System</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CareerTrack AI</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+                <a href="#internships" class="nav-link">Internships</a>
+                <button class="nav-btn" onclick="showAuthModal()">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </div>
+            </div>
+            <div class="nav-toggle" onclick="toggleNav()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="gradient-text">AI-Powered</span> Career Tracking
+                </h1>
+                <p class="hero-subtitle">
+                    Smart internship and placement system with AI resume analysis, 
+                    job recommendations, and skill gap analysis
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="showAuthModal('register')">
+                        <i class="fas fa-rocket"></i> Get Started
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('features')">
+                        <i class="fas fa-play-circle"></i> Learn More
+                    </button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="1000">0</div>
+                    <div class="stat-label">Students Placed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="150">0</div>
+                    <div class="stat-label">Partner Companies</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Active Internships</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">AI Features</h2>
+                <p class="section-subtitle">Advanced AI-powered career tools</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>AI Resume Analyzer</h3>
+                    <p>Upload your resume and get instant AI analysis with skill extraction and improvement suggestions</p>
+                    <div class="feature-progress">
+                        <div class="progress-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Smart Job Recommendations</h3>
+                    <p>Get personalized internship recommendations based on your skills and career goals</p>
+                    <div class="feature-progress">
+                        <div class="progress-bar" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Skill Gap Analysis</h3>
+                    <p>Identify missing skills and get personalized learning recommendations</p>
+                    <div class="feature-progress">
+                        <div class="progress-bar" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="feature-card glass-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Placement Readiness Score</h3>
+                    <p>Calculate your placement readiness with comprehensive scoring system</p>
+                    <div class="feature-progress">
+                        <div class="progress-bar" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section" id="dashboard" style="display: none;">
+        <div class="container">
+            <div class="dashboard-layout">
+                <!-- Sidebar -->
+                <div class="sidebar glass-card">
+                    <div class="sidebar-header">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-info">
+                                <h4 id="userName">John Doe</h4>
+                                <span id="userRole">Student</span>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="sidebar-nav">
+                        <a href="#" class="nav-item active" onclick="showDashboardSection('overview')">
+                            <i class="fas fa-home"></i> Overview
+                        </a>
+                        <a href="#" class="nav-item" onclick="showDashboardSection('profile')">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                        <a href="#" class="nav-item" onclick="showDashboardSection('internships')">
+                            <i class="fas fa-briefcase"></i> Internships
+                        </a>
+                        <a href="#" class="nav-item" onclick="showDashboardSection('applications')">
+                            <i class="fas fa-paper-plane"></i> Applications
+                        </a>
+                        <a href="#" class="nav-item" onclick="showDashboardSection('ai-tools')">
+                            <i class="fas fa-robot"></i> AI Tools
+                        </a>
+                        <a href="#" class="nav-item" onclick="showDashboardSection('security')">
+                            <i class="fas fa-shield-alt"></i> Security
+                        </a>
+                        <a href="#" class="nav-item" onclick="showDashboardSection('notifications')">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Overview Section -->
+                    <div class="content-section" id="overview-section">
+                        <div class="content-header">
+                            <h2>Dashboard Overview</h2>
+                            <div class="header-actions">
+                                <button class="btn btn-primary" onclick="refreshDashboard()">
+                                    <i class="fas fa-sync"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card glass-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalInternships">0</h3>
+                                    <p>Total Internships</p>
+                                </div>
+                            </div>
+                            <div class="stat-card glass-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalApplications">0</h3>
+                                    <p>Applications</p>
+                                </div>
+                            </div>
+                            <div class="stat-card glass-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="readinessScore">0%</h3>
+                                    <p>Readiness Score</p>
+                                </div>
+                            </div>
+                            <div class="stat-card glass-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="notifications">0</h3>
+                                    <p>Notifications</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Section -->
+                        <div class="charts-grid">
+                            <div class="chart-card glass-card">
+                                <h3>Application Status</h3>
+                                <div class="chart-placeholder">
+                                    <canvas id="applicationChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card glass-card">
+                                <h3>Skills Overview</h3>
+                                <div class="chart-placeholder">
+                                    <canvas id="skillsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div class="content-section" id="profile-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>Profile Management</h2>
+                        </div>
+                        <div class="profile-content">
+                            <div class="profile-form glass-card">
+                                <h3>Personal Information</h3>
+                                <form id="profileForm">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input type="text" id="profileName" class="form-input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" id="profileEmail" class="form-input" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Phone</label>
+                                        <input type="tel" id="profilePhone" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Bio</label>
+                                        <textarea id="profileBio" class="form-input" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Skills (comma separated)</label>
+                                        <input type="text" id="profileSkills" class="form-input" placeholder="Python, JavaScript, SQL">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                                </form>
+                            </div>
+                            
+                            <div class="resume-upload glass-card">
+                                <h3>Resume Upload</h3>
+                                <div class="upload-area" id="uploadArea">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drop your resume here or click to browse</p>
+                                    <input type="file" id="resumeInput" accept=".pdf" style="display: none;">
+                                </div>
+                                <button class="btn btn-secondary" onclick="analyzeResume()">Analyze Resume</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Internships Section -->
+                    <div class="content-section" id="internships-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>Available Internships</h2>
+                            <div class="header-actions">
+                                <div class="search-bar">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" placeholder="Search internships..." id="internshipSearch">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="internships-grid" id="internshipsGrid">
+                            <!-- Internships will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Applications Section -->
+                    <div class="content-section" id="applications-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>My Applications</h2>
+                        </div>
+                        <div class="applications-list" id="applicationsList">
+                            <!-- Applications will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- AI Tools Section -->
+                    <div class="content-section" id="ai-tools-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>AI Career Tools</h2>
+                        </div>
+                        <div class="ai-tools-grid">
+                            <div class="ai-tool-card glass-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h3>Job Recommendations</h3>
+                                <p>Get personalized job recommendations based on your profile</p>
+                                <button class="btn btn-primary" onclick="getJobRecommendations()">Get Recommendations</button>
+                            </div>
+                            <div class="ai-tool-card glass-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3>Skill Gap Analysis</h3>
+                                <p>Analyze your skills against job requirements</p>
+                                <button class="btn btn-primary" onclick="showSkillGapModal()">Analyze Skills</button>
+                            </div>
+                            <div class="ai-tool-card glass-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                </div>
+                                <h3>Readiness Score</h3>
+                                <p>Check your placement readiness score</p>
+                                <button class="btn btn-primary" onclick="updateReadinessScore()">Check Score</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Dashboard Section -->
+                    <div class="content-section" id="enterprise-dashboard-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>Enterprise Analytics Dashboard</h2>
+                        </div>
+                        
+                        <!-- Overview Cards -->
+                        <div class="overview-cards">
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="totalStudents">0</h3>
+                                    <p>Total Students</p>
+                                </div>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="totalCompanies">0</h3>
+                                    <p>Total Companies</p>
+                                </div>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="totalInternships">0</h3>
+                                    <p>Total Internships</p>
+                                </div>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="placementRate">0%</h3>
+                                    <p>Placement Rate</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Grid -->
+                        <div class="charts-grid">
+                            <!-- Bar Chart - Placements per Company -->
+                            <div class="chart-container glass-card">
+                                <h3>Placements per Company</h3>
+                                <canvas id="placementsPerCompanyChart"></canvas>
+                            </div>
+
+                            <!-- Pie Chart - Selected vs Rejected -->
+                            <div class="chart-container glass-card">
+                                <h3>Application Status</h3>
+                                <canvas id="applicationStatusChart"></canvas>
+                            </div>
+
+                            <!-- Line Chart - Internship Growth -->
+                            <div class="chart-container glass-card">
+                                <h3>Internship Growth</h3>
+                                <canvas id="internshipGrowthChart"></canvas>
+                            </div>
+
+                            <!-- Donut Chart - Department-wise Placements -->
+                            <div class="chart-container glass-card">
+                                <h3>Department-wise Placements</h3>
+                                <canvas id="departmentPlacementsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Top Companies Table -->
+                        <div class="top-companies glass-card">
+                            <h3>Top Performing Companies</h3>
+                            <div class="companies-table" id="topCompaniesTable">
+                                <!-- Companies will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Recent Activities -->
+                        <div class="recent-activities glass-card">
+                            <h3>Recent Activities</h3>
+                            <div class="activities-list" id="recentActivities">
+                                <!-- Activities will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Student Dashboard -->
+                    <div class="content-section" id="student-dashboard-enhanced" style="display: none;">
+                        <div class="content-header">
+                            <h2>Student Analytics Dashboard</h2>
+                        </div>
+
+                        <!-- Student Overview -->
+                        <div class="student-overview">
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-paper-plane"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="studentApplications">0</h3>
+                                    <p>Total Applications</p>
+                                </div>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="studentPlaced">0</h3>
+                                    <p>Placements</p>
+                                </div>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-percentage"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="studentSuccessRate">0%</h3>
+                                    <p>Success Rate</p>
+                                </div>
+                            </div>
+                            <div class="metric-card glass-card">
+                                <div class="metric-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="metric-content">
+                                    <h3 id="studentSkills">0</h3>
+                                    <p>Total Skills</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Analysis -->
+                        <div class="skills-analysis glass-card">
+                            <h3>Skills Analysis</h3>
+                            <div class="skills-content">
+                                <div class="user-skills">
+                                    <h4>Your Skills</h4>
+                                    <div class="skills-tags" id="userSkillsTags"></div>
+                                </div>
+                                <div class="skill-matches">
+                                    <h4>Skill Match % with Internships</h4>
+                                    <canvas id="skillMatchChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Application Timeline -->
+                        <div class="application-timeline glass-card">
+                            <h3>Application Timeline</h3>
+                            <canvas id="applicationTimelineChart"></canvas>
+                        </div>
+
+                        <!-- Recommendations -->
+                        <div class="recommendations glass-card">
+                            <h3>Personalized Recommendations</h3>
+                            <ul class="recommendations-list" id="studentRecommendations"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Section -->
+                    <div class="content-section" id="notifications-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>Notifications</h2>
+                        </div>
+                        <div class="notifications-list" id="notificationsList">
+                            <!-- Notifications will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Security Section -->
+                    <div class="content-section" id="security-section" style="display: none;">
+                        <div class="content-header">
+                            <h2>Cybersecurity Training & Labs</h2>
+                        </div>
+                        
+                        <!-- Security Labs -->
+                        <div class="security-section">
+                            <h3><i class="fas fa-flask"></i> Security Labs</h3>
+                            <div class="labs-grid" id="securityLabs">
+                                <!-- Labs will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Security Challenges -->
+                        <div class="security-section">
+                            <h3><i class="fas fa-trophy"></i> Security Challenges (CTF)</h3>
+                            <div class="challenges-grid" id="securityChallenges">
+                                <!-- Challenges will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Security Assessment Tools -->
+                        <div class="security-section">
+                            <h3><i class="fas fa-shield-alt"></i> Security Assessment</h3>
+                            <div class="assessment-tools">
+                                <div class="tool-card glass-card">
+                                    <h4>Vulnerability Scanner</h4>
+                                    <p>Scan websites and applications for security vulnerabilities</p>
+                                    <button class="btn btn-primary" onclick="runSecurityAssessment('vulnerability_scan')">
+                                        <i class="fas fa-search"></i> Start Scan
+                                    </button>
+                                </div>
+                                <div class="tool-card glass-card">
+                                    <h4>Penetration Testing</h4>
+                                    <p>Simulate cyber attacks to test system defenses</p>
+                                    <button class="btn btn-primary" onclick="runSecurityAssessment('penetration_test')">
+                                        <i class="fas fa-user-secret"></i> Start Test
+                                    </button>
+                                </div>
+                                <div class="tool-card glass-card">
+                                    <h4>Network Security Audit</h4>
+                                    <p>Analyze network configurations and security measures</p>
+                                    <button class="btn btn-primary" onclick="runSecurityAssessment('network_security')">
+                                        <i class="fas fa-network-wired"></i> Start Audit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kali Linux Tools -->
+                        <div class="security-section">
+                            <h3><i class="fab fa-linux"></i> Kali Linux Tools</h3>
+                            <div class="kali-tools-grid" id="kaliTools">
+                                <!-- Tools will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Security Certifications -->
+                        <div class="security-section">
+                            <h3><i class="fas fa-certificate"></i> Security Certifications</h3>
+                            <div class="certifications-content">
+                                <div class="cert-progress">
+                                    <h4>Your Certification Journey</h4>
+                                    <div class="cert-tracker" id="certTracker">
+                                        <!-- Certification progress will be shown here -->
+                                    </div>
+                                </div>
+                                <div class="available-certs" id="availableCerts">
+                                    <!-- Available certifications will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Threat Intelligence (Admin Only) -->
+                        <div class="security-section" id="threatIntelSection" style="display: none;">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Threat Intelligence</h3>
+                            <div class="threat-dashboard">
+                                <div class="threat-metrics">
+                                    <div class="metric-card glass-card">
+                                        <h4>Active Threats</h4>
+                                        <div class="metric-value" id="activeThreats">0</div>
+                                    </div>
+                                    <div class="metric-card glass-card">
+                                        <h4>Security Score</h4>
+                                        <div class="metric-value" id="securityScore">0%</div>
+                                    </div>
+                                </div>
+                                <div class="threat-list" id="threatList">
+                                    <!-- Threats will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Internship Module Section -->
+    <section class="internship-module" id="internships">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Internship Opportunities</h2>
+                <p class="section-subtitle">Discover and apply to top internships</p>
+            </div>
+            <div class="internship-filters">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All Internships</button>
+                    <button class="filter-tab" data-filter="tech">Technology</button>
+                    <button class="filter-tab" data-filter="marketing">Marketing</button>
+                    <button class="filter-tab" data-filter="finance">Finance</button>
+                </div>
+            </div>
+            <div class="internships-showcase">
+                <div class="internship-card glass-card">
+                    <div class="internship-header">
+                        <h3>Software Development Intern</h3>
+                        <span class="company-name">Tech Corp</span>
+                    </div>
+                    <div class="internship-details">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>San Francisco, CA</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>3 months</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill"></i>
+                            <span>$2000/month</span>
+                        </div>
+                    </div>
+                    <div class="skills-required">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                    </div>
+                    <div class="internship-actions">
+                        <button class="btn btn-primary">Apply Now</button>
+                        <button class="btn btn-secondary">Learn More</button>
+                    </div>
+                </div>
+                <div class="internship-card glass-card">
+                    <div class="internship-header">
+                        <h3>Marketing Intern</h3>
+                        <span class="company-name">Marketing Pro</span>
+                    </div>
+                    <div class="internship-details">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>New York, NY</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>6 months</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill"></i>
+                            <span>$1500/month</span>
+                        </div>
+                    </div>
+                    <div class="skills-required">
+                        <span class="skill-tag">Social Media</span>
+                        <span class="skill-tag">Content Writing</span>
+                        <span class="skill-tag">Analytics</span>
+                    </div>
+                    <div class="internship-actions">
+                        <button class="btn btn-primary">Apply Now</button>
+                        <button class="btn btn-secondary">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Placement Module Section -->
+    <section class="placement-module" id="placements">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Placement Opportunities</h2>
+                <p class="section-subtitle">Full-time positions and career opportunities</p>
+            </div>
+            <div class="placement-stats">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>95%</h3>
+                        <p>Placement Rate</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>$85K</h3>
+                        <p>Average Salary</p>
+                    </div>
+                </div>
+                <div class="stat-card glass-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>200+</h3>
+                        <p>Partner Companies</p>
+                    </div>
+                </div>
+            </div>
+            <div class="placements-grid">
+                <div class="placement-card glass-card">
+                    <div class="placement-header">
+                        <h3>Full Stack Developer</h3>
+                        <span class="company-name">Tech Startup</span>
+                        <span class="salary">$90K - $120K</span>
+                    </div>
+                    <div class="placement-details">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Austin, TX</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Full-time</span>
+                        </div>
+                    </div>
+                    <div class="skills-required">
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">AWS</span>
+                    </div>
+                    <button class="btn btn-primary">Apply Now</button>
+                </div>
+                <div class="placement-card glass-card">
+                    <div class="placement-header">
+                        <h3>Product Manager</h3>
+                        <span class="company-name">Enterprise Corp</span>
+                        <span class="salary">$100K - $140K</span>
+                    </div>
+                    <div class="placement-details">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Seattle, WA</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Full-time</span>
+                        </div>
+                    </div>
+                    <div class="skills-required">
+                        <span class="skill-tag">Strategy</span>
+                        <span class="skill-tag">Analytics</span>
+                        <span class="skill-tag">Leadership</span>
+                    </div>
+                    <button class="btn btn-primary">Apply Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section class="dashboard-preview" id="dashboard-preview">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Dashboard Preview</h2>
+                <p class="section-subtitle">Get a glimpse of your personalized dashboard</p>
+            </div>
+            <div class="dashboard-preview-grid">
+                <div class="preview-card glass-card">
+                    <div class="preview-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics Overview</h3>
+                    <p>Track your applications, interviews, and placement progress</p>
+                </div>
+                <div class="preview-card glass-card">
+                    <div class="preview-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Recommendations</h3>
+                    <p>Get personalized job recommendations based on your profile</p>
+                </div>
+                <div class="preview-card glass-card">
+                    <div class="preview-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Skill Development</h3>
+                    <p>Identify skill gaps and get learning recommendations</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>CareerTrack AI</span>
+                    </div>
+                    <p>AI-powered internship and placement tracking system for students and companies.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#internships">Internships</a></li>
+                        <li><a href="#placements">Placements</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Modules</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Admin Module</a></li>
+                        <li><a href="#">Student Module</a></li>
+                        <li><a href="#">Company Module</a></li>
+                        <li><a href="#">AI Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> info@careertrack.ai</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> San Francisco, CA</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CareerTrack AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Authentication Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="authTitle">Login</h3>
+                <button class="modal-close" onclick="closeAuthModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="authEmail" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="authPassword" class="form-input" required>
+                    </div>
+                    <div class="form-group" id="nameGroup" style="display: none;">
+                        <label>Name</label>
+                        <input type="text" id="authName" class="form-input">
+                    </div>
+                    <div class="form-group" id="roleGroup" style="display: none;">
+                        <label>Role</label>
+                        <select id="authRole" class="form-input">
+                            <option value="student">Student</option>
+                            <option value="company">Company</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="authSubmitBtn">Login</button>
+                </form>
+                <div class="auth-switch">
+                    <span id="authSwitchText">Don't have an account?</span>
+                    <button class="btn-link" id="authSwitchBtn" onclick="switchAuthMode()">Register</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
